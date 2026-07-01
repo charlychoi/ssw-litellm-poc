@@ -1,0 +1,42 @@
+# 환경변수 및 시크릿 — 절대 커밋 금지
+.env
+*.env
+.env.*
+!.env.example
+
+# 실제 API 키가 담긴 파일 — 절대 커밋 금지
+docs/generated_keys.json
+
+# Python 가상환경
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# uv lock (재현성 위해 포함 가능하지만 대용량이면 제외)
+# uv.lock  # 포함 유지 (의존성 고정)
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 로그
+*.log
+/tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# LiteLLM 런타임 파일
+litellm_proxy_server*.log

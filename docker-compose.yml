@@ -1,0 +1,41 @@
+# docker-compose.yml — Docker 환경 기준 (참고용)
+# 현재 PoC는 Docker 없이 로컬 프로세스로 실행
+# PostgreSQL + Redis 운영 환경 전환 시 이 파일 사용
+
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: litellm
+      POSTGRES_PASSWORD: litellm_poc
+      POSTGRES_DB: litellm
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  litellm:
+    image: ghcr.io/berriai/litellm:main-v1.83.7
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./litellm/config.yaml:/app/config.yaml
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://litellm:litellm_poc@postgres:5432/litellm
+      REDIS_URL: redis://redis:6379
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  postgres_data:

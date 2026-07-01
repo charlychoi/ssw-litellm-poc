@@ -1,0 +1,28 @@
+[project]
+name = "ssw-litellm-governance-poc"
+version = "0.1.0"
+description = "상상우리 LiteLLM AI 비용 거버넌스 PoC"
+requires-python = ">=3.11"
+dependencies = [
+    "litellm==1.83.7",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "httpx>=0.27.0",
+    "python-dotenv>=1.0.0",
+    "streamlit>=1.39.0",
+    "pandas>=2.2.0",
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "rich>=13.9.0",
+    "typer>=0.12.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
