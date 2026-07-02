@@ -57,38 +57,50 @@ RESULTS: list[dict] = []
 
 # ── 유틸 ──────────────────────────────────────────────────────────────────────
 
-def _chat(key_alias: str, model: str, content: str, timeout: float = 30.0) -> dict:
-    """LiteLLM /v1/chat/completions 호출 후 결과 dict 반환."""
+def _chat(key_alias: str, model: str, content: str, timeout: float = 30.0,
+          retries: int = 2, retry_delay: float = 8.0) -> dict:
+    """LiteLLM /v1/chat/completions 호출. 429 rate limit 시 retry."""
     key = KEYS[key_alias]
-    try:
-        r = httpx.post(
-            f"{LITELLM_BASE}/v1/chat/completions",
-            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-            json={"model": model, "messages": [{"role": "user", "content": content}],
-                  "max_tokens": MAX_TOKENS},
-            timeout=timeout,
-        )
-        data = r.json()
-        if "choices" in data:
-            content = data["choices"][0]["message"].get("content") or ""
-            return {
-                "status": "ok",
-                "http": r.status_code,
-                "content": content,
-                "model": data.get("model", model),
-                "usage": data.get("usage", {}),
-                "is_mock": "[mock]" in content,
-            }
-        else:
-            err = data.get("error", {})
-            return {
-                "status": "blocked",
-                "http": r.status_code,
-                "error_type": err.get("type", "unknown"),
-                "message": err.get("message", str(data))[:200],
-            }
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+    for attempt in range(retries + 1):
+        try:
+            r = httpx.post(
+                f"{LITELLM_BASE}/v1/chat/completions",
+                headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                json={"model": model, "messages": [{"role": "user", "content": content}],
+                      "max_tokens": MAX_TOKENS},
+                timeout=timeout,
+            )
+            data = r.json()
+            if "choices" in data:
+                msg_content = data["choices"][0]["message"].get("content") or ""
+                return {
+                    "status": "ok",
+                    "http": r.status_code,
+                    "content": msg_content,
+                    "model": data.get("model", model),
+                    "usage": data.get("usage", {}),
+                    "is_mock": "[mock]" in msg_content,
+                }
+            else:
+                err = data.get("error", {})
+                err_type = err.get("type", "unknown")
+                # 429 rate limit → retry
+                if r.status_code == 429 and attempt < retries:
+                    print(f"     ⏳ 429 rate limit, {retry_delay}s 후 재시도 ({attempt+1}/{retries})...")
+                    time.sleep(retry_delay)
+                    continue
+                return {
+                    "status": "blocked",
+                    "http": r.status_code,
+                    "error_type": err_type,
+                    "message": err.get("message", str(data))[:200],
+                }
+        except Exception as e:
+            if attempt < retries:
+                time.sleep(retry_delay)
+                continue
+            return {"status": "error", "message": str(e)}
+    return {"status": "error", "message": "max retries exceeded"}
 
 
 def _record(scenario: int, name: str, result: dict, expected: str):
@@ -472,12 +484,14 @@ def main():
     elif args.case == "cli-real":
         scenario_cli_real()
     else:
-        # 전체 실행
+        # 전체 실행 — OpenRouter free tier rate limit을 피하기 위해 간격 배치
         scenario_openrouter()
         scenario_groq()
         scenario_denied()
         scenario_budget()
         scenario_report()
+        print("\n⏳ OpenRouter rate limit 쿨다운 (10초)...")
+        time.sleep(10)
         scenario_cli_real()
 
     passed, total = generate_report()

@@ -1,9 +1,9 @@
 # Real Provider Validation 결과 — Phase 2.3
 
-> 검증 시각: 2026-07-02 10:16:04  
+> 검증 시각: 2026-07-02 10:52:21  
 > 프로젝트: /Users/charlychoi/Desktop/ssw-litellm-governance-poc/  
 > LiteLLM: http://localhost:4000  
-> 결과: **9/9 통과**
+> 결과: **10/10 통과**
 
 ---
 
@@ -13,7 +13,7 @@
 |---|---|
 | LiteLLM Proxy | http://localhost:4000 |
 | OPENROUTER_API_KEY | 설정됨 |
-| GROQ_API_KEY | ❌ 미설정 |
+| GROQ_API_KEY | 설정됨 |
 | 테스트 제한 (max_tokens) | 80 |
 
 ## Provider 설정
@@ -41,7 +41,8 @@
 |:---:|---|:---:|
 | 1 | staff-lee-chat → ssw-free-openrouter | ✅ |
 | 1 | admin-park-test → ssw-low-cost-real | ✅ |
-| 2 | Groq 키 미설정 — 건너뜀 | ✅ |
+| 2 | dev-kim-codex → ssw-fast-groq | ✅ |
+| 2 | dev-kim-gemini → ssw-fast-groq | ✅ |
 | 3 | staff-lee-chat → ssw-expensive-real (차단 기대) | ✅ |
 | 3 | staff-lee-chat → ssw-fast-groq (차단 기대) | ✅ |
 | 4 | budget_exceeded 차단 (max_budget=0) | ✅ |
@@ -53,19 +54,29 @@
 
 ### ✅ Scenario 1 — staff-lee-chat → ssw-free-openrouter
 - **상태**: 성공 (HTTP 200)
-- **응답**: `이 응답은 LiteLLM 게이트웨이를 통해 전달되었습니다.`
-- **token usage**: prompt=34 completion=16 total=50
-- **resolved model**: ssw-free-openrouter
+- **응답**: `Okay, the user wants to check if a response came through a LiteLLM gateway in one sentence. Let me think about how to phrase that.
+
+First, I need to r`
+- **token usage**: prompt=38 completion=80 total=118
+- **resolved model**: nvidia/nemotron-3-nano-30b-a3b:free
 
 ### ✅ Scenario 1 — admin-park-test → ssw-low-cost-real
 - **상태**: 성공 (HTTP 200)
-- **응답**: `User asks: "Say REAL_PROVIDER_OK in exactly three words." They likely want the phrase "REAL_PROVIDER_OK" repeated? But they say "in exactly three word`
+- **응답**: `The user asks: "Say REAL_PROVIDER_OK in exactly three words." They want the phrase "REAL_PROVIDER_OK" expressed in exactly three words. Possibly they `
 - **token usage**: prompt=27 completion=80 total=107
 - **resolved model**: ssw-low-cost-real
 
-### ✅ Scenario 2 — Groq 키 미설정 — 건너뜀
-- **상태**: 오류
-- **message**: GROQ_API_KEY 없음
+### ✅ Scenario 2 — dev-kim-codex → ssw-fast-groq
+- **상태**: 성공 (HTTP 200)
+- **응답**: `GROQ is real okay.`
+- **token usage**: prompt=46 completion=8 total=54
+- **resolved model**: ssw-fast-groq
+
+### ✅ Scenario 2 — dev-kim-gemini → ssw-fast-groq
+- **상태**: 성공 (HTTP 200)
+- **응답**: `Gemini key Groq okay.`
+- **token usage**: prompt=49 completion=8 total=57
+- **resolved model**: ssw-fast-groq
 
 ### ✅ Scenario 3 — staff-lee-chat → ssw-expensive-real (차단 기대)
 - **상태**: 차단 (HTTP 401)
@@ -112,4 +123,4 @@
 
 ---
 
-*생성: 2026-07-02 10:16:04 by scripts/70_real_provider_test.py*
+*생성: 2026-07-02 10:52:21 by scripts/70_real_provider_test.py*

@@ -105,3 +105,7 @@ router_settings:
     low-cost: ssw-low-cost
     free-test: ssw-free-test
     fake: ssw-fake
+  # Phase 2.3: free tier rate limit(429) 시 자동 fallback
+  fallbacks:
+    - ssw-free-openrouter:
+        - ssw-low-cost-real
