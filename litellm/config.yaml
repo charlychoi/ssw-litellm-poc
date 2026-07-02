@@ -61,6 +61,32 @@ model_list:
       api_key: fake-key-not-used
       mock_response: "Codex CLI(gpt-4o-mini) → LiteLLM 게이트웨이 경유 성공! 가상키(dev-kim-codex) 정책 제어 검증 완료. [mock]"
 
+  # ── Phase 2.3 — 실제 Provider alias (OpenRouter / Groq) ───────────────────
+
+  # OpenRouter 무료 모델 — Google Gemma 4 31B free (2025-07 안정적)
+  - model_name: ssw-free-openrouter
+    litellm_params:
+      model: openrouter/google/gemma-4-31b-it:free
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  # OpenRouter 저가 모델 — NVIDIA Nemotron 3 Nano 30B free
+  - model_name: ssw-low-cost-real
+    litellm_params:
+      model: openrouter/nvidia/nemotron-3-nano-30b-a3b:free
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  # Groq 빠른 모델 — llama-3.1-8b-instant (초저지연 검증용)
+  - model_name: ssw-fast-groq
+    litellm_params:
+      model: groq/llama-3.1-8b-instant
+      api_key: os.environ/GROQ_API_KEY
+
+  # 비허용 모델 차단 테스트용 고가 alias (Phase 2.3 Scenario 3)
+  - model_name: ssw-expensive-real
+    litellm_params:
+      model: openrouter/anthropic/claude-opus-4
+      api_key: os.environ/OPENROUTER_API_KEY
+
 litellm_settings:
   drop_params: true
   set_verbose: false
