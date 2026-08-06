@@ -43,3 +43,10 @@ litellm_proxy_server*.log
 
 # Hermes-LiteLLM PoC local runtime files
 .hermes-test-home/
+
+# Phase 2 local runtime / generated secrets
+.hermes-phase2-homes/
+.pglite-phase2-db/
+.postgres-phase2-db/
+.s.PGSQL.*
+poc/tmp_litellm_no_db_config.yaml

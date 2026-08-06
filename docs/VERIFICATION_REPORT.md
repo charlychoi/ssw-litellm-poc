@@ -248,3 +248,40 @@ uv run python scripts/60_cli_integration_test.py
 | Phase 2 | Gemini CLI 라우팅 및 모델 차단 | ✅ |
 
 **총합: 10/10 검증 완료** (Gemini CLI 허용 모델 응답은 실제 Google API Key 연동 시 추가 검증 가능)
+
+## [2026-08-06 06:17:45] Case: `allowed` — User: `lee`, Tool: `chat`
+
+- **Key alias**: `staff-lee-chat`
+- **Model attempted**: `ssw-fake`
+- **Result**: **SUCCESS**
+- **Cost**: N/A
+- **Raw result**: `{'id': 'chatcmpl-292a4d09-d27e-463c-9bf9-37465f9f3ac8', 'created': 1785997065, 'model': 'ssw-fake', 'object': 'chat.completion', 'choices': [{'finish_reason': 'stop', 'index': 0, 'message': {'content': '안녕하세요! 상상우리 AI 게이트웨이 Mock 응답입니다. 거버넌스 PoC 테스트 성공.', 'role': 'assistant'}}], 'usage': {'completion_tokens': 20, 'prompt_tokens': 10, 'total_tokens': 30}}`
+
+
+## [2026-08-06 06:17:46] Case: `denied-model` — User: `lee`, Tool: `chat`
+
+- **Key alias**: `staff-lee-chat`
+- **Model attempted**: `ssw-expensive`
+- **Result**: **BLOCKED**
+- **Cost**: N/A
+- **Raw result**: `{'status_code': 401, 'body': '{"error":{"message":"key not allowed to access model. This key can only access models=[\'ssw-low-cost\', \'ssw-fake\', \'low-cost\']. Tried to access ssw-expensive","type":"key_model_access_denied","param":"model","code":"401"}}'}`
+
+
+## [2026-08-06 06:17:47] Budget Block Test
+
+| Step | Result | Detail |
+|---|---|---|
+| Call 1 (pre-budget-zero) | SUCCESS | `{'id': 'chatcmpl-2ec0b3a9-16ca-4841-bbc1-2f7d237ee5bb', 'created': 1785997067, 'model': 'ssw-fake', 'object': 'chat.completion', 'choices': [{'finish_reason': 'stop', 'index': 0, 'message': {'content'` |
+| Call 2 (post-budget-zero) | BLOCKED (budget exceeded) | `{"error":{"message":"Budget has been exceeded! Current cost: 1.35e-05, Max budget: 0.0","type":"budget_exceeded","param":null,"code":"400"}}` |
+
+**Conclusion**: LiteLLM budget enforcement PASSED.
+
+
+## [2026-08-06 06:18:03] Case: `allowed` — User: `park`, Tool: `admin-api`
+
+- **Key alias**: `admin-park-test`
+- **Model attempted**: `ssw-expensive`
+- **Result**: **BLOCKED**
+- **Cost**: N/A
+- **Raw result**: `{'status_code': 429, 'body': '{"error":{"message":"litellm.RateLimitError: RateLimitError: OpenAIException - You have no credits remaining. Add credits to continue using the API at https://platform.openai.com/settings/organization/billing/.No fallback model group found for original model_group=ssw-expensive. Fallbacks=[{\'ssw-free-openrouter\': [\'ssw-low-cost-real\']}]. Received Model Group=ssw-expensive\\nAvailable Model Group Fallbacks=None\\nError doing the fallback: litellm.RateLimitError: `
+

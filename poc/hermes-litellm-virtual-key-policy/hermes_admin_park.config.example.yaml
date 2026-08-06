@@ -1,0 +1,12 @@
+model:
+  provider: custom
+  default: ssw-fake
+  base_url: http://127.0.0.1:4100/v1
+  api_key: <LITELLM_VIRTUAL_KEY_FOR_ADMIN_PARK_TEST>
+
+memory:
+  memory_enabled: false
+  user_profile_enabled: false
+
+agent:
+  max_turns: 8
