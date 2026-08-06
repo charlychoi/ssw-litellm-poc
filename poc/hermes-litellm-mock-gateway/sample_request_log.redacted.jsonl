@@ -1,0 +1,1 @@
+{"path": "/v1/chat/completions", "headers": {"Content-Type": "application/json", "User-Agent": "OpenAI/Python 2.24.0", "Authorization": "Bearer test-virtual-key...REDACTED"}, "model": "test-model", "stream": true, "user": null, "metadata": null, "extra_body_keys": ["max_tokens", "stream_options"]}

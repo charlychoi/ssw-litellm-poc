@@ -40,3 +40,6 @@ build/
 
 # LiteLLM 런타임 파일
 litellm_proxy_server*.log
+
+# Hermes-LiteLLM PoC local runtime files
+.hermes-test-home/
