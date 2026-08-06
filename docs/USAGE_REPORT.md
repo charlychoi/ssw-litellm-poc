@@ -1,8 +1,8 @@
 # LiteLLM Usage Report
 
-Generated: 2026-07-01 21:42:18
+Generated: 2026-08-06 08:37:19
 
-Proxy: http://localhost:4000
+Proxy: http://127.0.0.1:4100
 
 ---
 
@@ -10,53 +10,52 @@ Proxy: http://localhost:4000
 
 | key_alias       | user_id   | team_id    | tool        |   max_budget | spend     |
 |:----------------|:----------|:-----------|:------------|-------------:|:----------|
-| admin-park-test | park      | admin-team | admin-api   |           10 | $0.000000 |
-| staff-lee-chat  | lee       | staff-team | chat        |            1 | $0.000000 |
+| admin-park-test | park      | admin-team | admin-api   |           10 | $0.000356 |
+| staff-lee-chat  | lee       | staff-team | chat        |            1 | $0.000370 |
 | dev-kim-gemini  | kim       | dev-team   | gemini-cli  |            5 | $0.000000 |
-| dev-kim-codex   | kim       | dev-team   | codex-cli   |            5 | $0.000000 |
-| dev-kim-claude  | kim       | dev-team   | claude-code |            5 | $0.000013 |
+| dev-kim-codex   | kim       | dev-team   | codex-cli   |            5 | $0.000357 |
+| dev-kim-claude  | kim       | dev-team   | claude-code |            5 | $0.000000 |
 
 
 ## Overall Summary
 
-- **Total calls**: 6
+- **Total calls**: 11
 
-- **Total cost**: $0.000027
+- **Total cost**: $0.001097
 
 
 ## Cost by User
 
 | user_id          |   calls | total_cost   |
 |:-----------------|--------:|:-------------|
+| lee              |       4 | $0.000370    |
+| kim              |       2 | $0.000357    |
+| park             |       3 | $0.000356    |
 | budget-test-user |       2 | $0.000013    |
-| kim              |       3 | $0.000013    |
-| lee              |       1 | $0.000000    |
 
 
 ## Cost by Key / Tool
 
 | key_alias   |   calls | total_cost   |
 |:------------|--------:|:-------------|
-|             |       6 | $0.000027    |
+|             |      11 | $0.001097    |
 
 
 ## Cost by Model
 
-| model                              |   calls | total_cost   |   tokens |
-|:-----------------------------------|--------:|:-------------|---------:|
-| openai/gpt-4o-mini                 |       2 | $0.000027    |       60 |
-| anthropic/claude-3-5-sonnet-latest |       1 | $0.000000    |        0 |
-| openai/fake                        |       1 | $0.000000    |        0 |
-| ssw-expensive                      |       1 | $0.000000    |        0 |
-| ssw-fake                           |       1 | $0.000000    |        0 |
+| model              |   calls | total_cost   |   tokens |
+|:-------------------|--------:|:-------------|---------:|
+| openai/gpt-4o-mini |       8 | $0.001097    |     6490 |
+| openai/gpt-4o      |       1 | $0.000000    |        0 |
+| ssw-expensive      |       1 | $0.000000    |        0 |
+| ssw-fake           |       1 | $0.000000    |        0 |
 
 
 ## Blocked Events
 
-| request_id                           | user_id          | model                              | status   | startTime                   |
-|:-------------------------------------|:-----------------|:-----------------------------------|:---------|:----------------------------|
-| 135f9cc9-fda1-4aec-9242-c0d4b8c62737 | budget-test-user | ssw-fake                           | failure  | 2026-07-01T12:37:40.151000Z |
-| a3990d56-c147-4954-8612-41fb47e11016 | lee              | ssw-expensive                      | failure  | 2026-07-01T12:36:56.069000Z |
-| af9a8203-4006-4b8f-8323-2e8c01344dad | kim              | openai/fake                        | failure  | 2026-07-01T12:35:42.636000Z |
-| 0e87b323-3bfc-4143-9251-d1a707797178 | kim              | anthropic/claude-3-5-sonnet-latest | failure  | 2026-07-01T12:34:50.816000Z |
+| request_id                           | user_id          | model         | status   | startTime                   |
+|:-------------------------------------|:-----------------|:--------------|:---------|:----------------------------|
+| 96199cc3-6dcd-477f-b022-42b280c8a357 | park             | openai/gpt-4o | failure  | 2026-08-06T06:18:11.623000Z |
+| b1d76a2d-8bf2-44ac-bd65-a4a710f5296d | budget-test-user | ssw-fake      | failure  | 2026-08-06T06:17:48.490000Z |
+| d5f2cc05-2ee1-4e11-8436-2bf5cf0475a0 | lee              | ssw-expensive | failure  | 2026-08-06T06:17:46.433000Z |
 
