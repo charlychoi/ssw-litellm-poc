@@ -3,7 +3,7 @@
 ## 1. Gateway/환경
 
 - [ ] LiteLLM Proxy가 정상 실행된다.
-- [ ] LiteLLM 버전이 안전 버전이다. v1.82.7/v1.82.8 사용 금지.
+- [ ] LiteLLM 버전이 안전 버전이다. v1.82.7/v1.82.8 사용 금지, `>=1.83.10` 사용.
 - [ ] OpenRouter API Key가 `.env`에서 로드된다.
 - [ ] Groq API Key가 `.env`에서 로드된다.
 - [ ] API Key 원문이 로그/문서에 노출되지 않는다.

@@ -2,7 +2,7 @@
 
 > **상태**: Phase 1/2/2.3 + Hermes 1차/2차 검증 완료, Hermes 3차 보완 검증 진행  
 > **핵심 구조**: Hermes 업무허브 → LiteLLM Gateway → 모델별 provider/mock upstream  
-> **LiteLLM 권장 버전**: `1.83.7` 이상 고정 권장 (`1.82.7`/`1.82.8` 공급망 이슈로 사용 금지)  
+> **LiteLLM 권장 버전**: `1.83.10` 이상 고정 권장 (`1.82.7`/`1.82.8` 공급망 이슈로 사용 금지)
 > **보안 원칙**: 직원 개인 provider API key 미지급, Hermes에는 LiteLLM virtual key만 주입
 
 이 repo는 상상우리 AI 업무허브에서 **직원별 모델 권한, 예산, 사용량 집계, 우회 차단**이 가능한지 검증하기 위한 PoC입니다. 초기 LiteLLM 거버넌스 검증에서 출발해, 현재는 Hermes profile별 LiteLLM virtual key 연결까지 검증했습니다.
@@ -99,7 +99,7 @@ Python 의존성:
 
 ```bash
 uv sync
-uv pip install 'litellm[proxy]==1.83.7' prisma tabulate
+uv pip install 'litellm[proxy]>=1.83.10,<2.0.0' prisma tabulate
 ```
 
 Prisma client 생성:

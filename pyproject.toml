@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "상상우리 LiteLLM AI 비용 거버넌스 PoC"
 requires-python = ">=3.11"
 dependencies = [
-    "litellm[proxy]==1.83.7",
+    "litellm[proxy]>=1.83.10,<2.0.0",
     "tabulate>=0.10.0",
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.30.0",

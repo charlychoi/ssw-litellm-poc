@@ -202,7 +202,7 @@ def build(doc: Document):
     add_table(doc,
         ["항목", "값"],
         [
-            ["LiteLLM Proxy 버전", "v1.83.7 (v1.82.7/v1.82.8 공급망 공격으로 사용 금지)"],
+            ["LiteLLM Proxy 버전", ">=1.83.10 (v1.82.7/v1.82.8 공급망 공격으로 사용 금지)"],
             ["LiteLLM 실행 주소",  "http://localhost:4000"],
             ["데이터베이스",       "PostgreSQL 16 (Homebrew, DB: litellm_poc)"],
             ["Python 환경",        "Python 3.11.15, uv 패키지 관리자"],
